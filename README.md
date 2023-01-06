@@ -1,2 +1,2 @@
-# MIS_SQL
-opengauss
+适用于openGauss数据库。
+其他数据库需自行修改部分语句。

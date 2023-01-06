@@ -1,8 +1,3 @@
-CREATE SCHEMA zjutuser AUTHORIZATION zjutuser;
-SET SEARCH_PATH TO zjutuser, Public;
-SHOW SEARCH_PATH;
-
-
 DROP TABLE IF EXISTS 123_dept02;
 CREATE TABLE 123_dept02			
 (
@@ -119,73 +114,6 @@ CONSTRAINT deptcourse_dept FOREIGN KEY (456_dno02) REFERENCES 123_dept02,
 CONSTRAINT deptcourse_course FOREIGN KEY (456_cno02) REFERENCES 123_course02
 );
 
-
---建立视图
-DROP VIEW IF EXISTS Tea_Cou_Cla;
-CREATE VIEW Tea_Cou_Cla
-AS
-SELECT 123_teach02.456_tno02,456_tname02,123_course02.456_cno02 courseno,123_course02.456_cname02 coursename,123_class02.456_cno02,123_class02.456_cname02,123_teach02.456_semester02,123_course02.456_ccredit02
-FROM 123_teacher02,123_course02,123_class02,123_teach02
-WHERE 123_teach02.456_cno02 = 123_class02.456_cno02 AND 123_teach02.456_courseno02 = 123_course02.456_cno02 AND 123_teach02.456_tno02 = 123_teacher02.456_tno02;
-
---建立视图
-DROP VIEW IF EXISTS Tea_Cou_Cla_all;
-CREATE VIEW Tea_Cou_Cla_all
-AS
-SELECT 123_teach02.456_tno02,456_tname02,123_course02.456_cno02 courseno,123_course02.456_cname02 coursename,123_class02.456_cno02,123_class02.456_cname02,123_teach02.456_semester02
-FROM 123_teacher02,123_course02,123_class02,123_teach02;
-
---建立视图
-DROP VIEW IF EXISTS dep_cou_dc;
-CREATE VIEW dep_cou_dc
-AS
-SELECT 123_course02.456_cname02,123_course02.456_cno02,123_dept02.456_dname02,123_dept02.456_dno02,123_deptcourse02.456_optional02,123_deptcourse02.456_semester02
-FROM 123_course02,123_dept02,123_deptcourse02
-WHERE 123_course02.456_cno02 = 123_deptcourse02.456_cno02 AND 123_dept02.456_dno02 = 123_deptcourse02.456_dno02;
-
---建立视图
-DROP VIEW IF EXISTS cla_cou_tea_ter;
-CREATE VIEW cla_cou_tea_ter
-AS
-SELECT 123_class02.456_cno02,123_teach02.456_semester02,123_course02.456_cname02 coursename,123_course02.456_ccredit02,123_teacher02.456_tname02,123_teacher02.456_tsex02,123_teacher02.456_tage02,123_teacher02.456_phone02,123_teacher02.456_title02,123_course02.456_cno02 courseno
-FROM 123_class02,123_course02,123_teach02,123_teacher02
-WHERE 123_class02.456_cno02 = 123_teach02.456_cno02 AND 123_teach02.456_courseno02 = 123_course02.456_cno02 AND 123_teach02.456_tno02 = 123_teacher02.456_tno02;
-
---建立视图
-DROP VIEW IF EXISTS stu_rep_tea_ter_cou;
-CREATE VIEW stu_rep_tea_ter_cou
-AS
-SELECT 123_student02.456_sno02,123_student02.456_sname02,123_report02.456_semester02,123_report02.456_cno02,123_course02.456_cname02 coursename,123_report02.456_grade02,123_course02.456_ccredit02,123_teacher02.456_tname02,123_teacher02.456_tsex02,123_teacher02.456_tage02,123_teacher02.456_phone02,123_teacher02.456_title02,123_report02.456_appraise02,123_teach02.456_tno02
-FROM 123_course02,123_teach02,123_teacher02,123_report02,123_student02
-WHERE 123_student02.456_sno02 = 123_report02.456_sno02 AND 123_report02.456_cno02 = 123_course02.456_cno02 AND 123_report02.456_cno02 = 123_teach02.456_courseno02 AND 123_teach02.456_tno02 = 123_teacher02.456_tno02 AND 123_student02.456_cno02 = 123_teach02.456_cno02;
-
---建立视图
-DROP VIEW IF EXISTS stu_cla_dep_rep_tea;
-CREATE VIEW stu_cla_dep_rep_tea
-AS
-SELECT 123_report02.456_cno02,123_teach02.456_tno02,123_report02.456_semester02,123_student02.456_sno02,123_student02.456_sname02,123_class02.456_cname02,123_student02.456_ssex02,123_student02.456_sage02,123_dept02.456_dname02
-FROM 123_student02,123_class02,123_dept02,123_report02,123_teach02
-WHERE 123_student02.456_dno02 = 123_dept02.456_dno02 AND 123_student02.456_cno02 = 123_class02.456_cno02 AND 123_student02.456_sno02 = 123_report02.456_sno02 AND 123_report02.456_semester02 = 123_teach02.456_semester02 AND 123_teach02.456_courseno02 = 123_report02.456_cno02 AND 123_student02.456_cno02 = 123_teach02.456_cno02;
-
---建立视图
-DROP VIEW IF EXISTS stu_cla;
-CREATE VIEW stu_cla
-AS
-SELECT 123_student02.456_sno02,123_student02.456_sname02,123_class02.456_cno02,123_class02.456_cname02
-FROM 123_class02,123_student02
-WHERE 123_student02.456_cno02 = 123_class02.456_cno02;
-
---建立视图
-DROP VIEW IF EXISTS stu_tea_cou;
-CREATE VIEW stu_tea_cou
-AS
-SELECT 123_student02.456_sno02,123_student02.456_cno02,123_course02.456_cno02 courseno,123_course02.456_cname02,123_course02.456_ccredit02,123_teach02.456_semester02
-FROM 123_student02,123_course02,123_teach02
-WHERE 123_student02.456_cno02 = 123_teach02.456_cno02 AND 123_course02.456_cno02 = 123_teach02.456_courseno02;
-
-
-
-
 --建立触发器1
 CREATE OR REPLACE FUNCTION Reports_update_func() RETURNS TRIGGER AS 
            $$ 
@@ -233,20 +161,5 @@ BEGIN
    CLOSE C; 
 END;  
           
---建立存储过程 手动选课
-CREATE OR REPLACE PROCEDURE  sp_xk ( sno  VARCHAR(10) , cno  VARCHAR(10) , semester  VARCHAR(10))
-AS
-DECLARE
-BEGIN
-  INSERT INTO  zjutuser.123_report02 values(sno,cno,semester); 
-END;  
-
---建立存储过程 手动退课
-CREATE OR REPLACE PROCEDURE  sp_tk ( sno  VARCHAR(10) , cno  VARCHAR(10) , semester  VARCHAR(10))
-AS
-DECLARE
-BEGIN
-  delete from zjutuser.123_report02 where 456_sno02 = sno and 456_cno02 = cno and 456_semester02 = semester;
-END;  
 
 
